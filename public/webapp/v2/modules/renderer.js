@@ -867,6 +867,51 @@ export function render(state, prevState, actions) {
   if (state.focus !== prevState?.focus) {
     renderFocusOverlay(state);
   }
+
+  // ═══════════════════════════════════════════
+  // TEMPORARY DEBUG PANEL — REMOVE AFTER FIXING
+  // ═══════════════════════════════════════════
+  let debugPanel = document.getElementById('debug-panel');
+  if (!debugPanel) {
+    debugPanel = document.createElement('div');
+    debugPanel.id = 'debug-panel';
+    debugPanel.style.cssText = `
+      position: fixed;
+      bottom: 70px;
+      left: 10px;
+      right: 10px;
+      background: rgba(255, 0, 0, 0.9);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-family: monospace;
+      z-index: 99999;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    `;
+    document.body.appendChild(debugPanel);
+  }
+
+  const debugInfo = {
+    t: new Date().toLocaleTimeString(),
+    tab: state.ui?.activeTab,
+    loadingMe: state.loading?.me,
+    error: state.error ? String(state.error) : null,
+    habitsN: state.habits?.length || 0,
+    habits: (state.habits || []).map(h => `#${h.id} ${h.title}`),
+    checkins: Object.keys(state.checkins || {}),
+    meId: state.me?.id || state.me?.user?.id || 'none',
+    $grid: !!$grid,
+    $content: !!$content,
+    $contentHidden: $content?.hidden,
+    $empty: !!$empty,
+    $emptyHidden: $empty?.hidden,
+  };
+
+  debugPanel.textContent = JSON.stringify(debugInfo, null, 2);
 }
 
 // =============================================================================

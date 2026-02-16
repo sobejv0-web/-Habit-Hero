@@ -375,6 +375,13 @@ async function handleAddHabit(data) {
       };
       console.log('[AddHabit] Dispatching ADD_HABIT:', fullHabit);
       store.dispatch({ type: Actions.ADD_HABIT, payload: fullHabit });
+
+      // TEMPORARY DEBUG ALERT — REMOVE AFTER FIXING
+      try {
+        const st = store.getState();
+        alert(`Habit created!\n\nID: ${fullHabit.id}\nTitle: ${fullHabit.title}\nType: ${fullHabit.type}\n\nStore habits: ${st.habits?.length}\nStore tab: ${st.ui?.activeTab}\nLoading.me: ${st.loading?.me}`);
+      } catch (_) {}
+
       showToast({ type: 'success', message: `«${data.title}» додано` });
       track('habit_created', { type: fullHabit.type });
 
