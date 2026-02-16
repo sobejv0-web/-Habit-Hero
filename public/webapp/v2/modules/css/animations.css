@@ -1,0 +1,229 @@
+/* =============================================================================
+   animations.css — Habit System v2 · Motion Design
+   
+   Principles:
+   - Every animation serves a purpose (feedback, state change, attention).
+   - Durations: micro-interactions 150–300ms, modals 350ms, looping 2–4s.
+   - Curve: cubic-bezier(0.25, 0.8, 0.25, 1) — Apple-style "spring".
+   - Reduced motion: all animations respect prefers-reduced-motion.
+   ============================================================================= */
+
+/* ─── Timing tokens (consumed via var() in other files) ────────────────────── */
+
+:root {
+  --ease-spring:   cubic-bezier(0.25, 0.8, 0.25, 1);
+  --ease-bounce:   cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out:      cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in:       cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  --dur-instant:   80ms;
+  --dur-fast:      150ms;
+  --dur-normal:    250ms;
+  --dur-slow:      350ms;
+  --dur-modal:     400ms;
+}
+
+/* ─── @keyframes ───────────────────────────────────────────────────────────── */
+
+/* Pulse — plays on habit tap (done) */
+@keyframes pulse {
+  0%   { transform: scale(1);   }
+  40%  { transform: scale(1.04); }
+  100% { transform: scale(1);   }
+}
+
+/* Checkmark pop-in */
+@keyframes check-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Slide-up — modals, sheets, toasts */
+@keyframes slide-up {
+  0%   { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+
+/* Slide-down — dismissing sheets */
+@keyframes slide-down {
+  0%   { transform: translateY(0);    opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Fade in */
+@keyframes fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Fade out */
+@keyframes fade-out {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Scale-fade — context menu items, modal content */
+@keyframes scale-fade-in {
+  0%   { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* Shake — error / validation fail */
+@keyframes shake {
+  0%, 100% { transform: translateX(0);   }
+  15%      { transform: translateX(-6px); }
+  30%      { transform: translateX(5px);  }
+  45%      { transform: translateX(-4px); }
+  60%      { transform: translateX(3px);  }
+  75%      { transform: translateX(-2px); }
+  90%      { transform: translateX(1px);  }
+}
+
+/* Neon breathe — subtle glow pulsation for done cards */
+@keyframes neon-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(54, 201, 143, 0.15),
+      0 0 16px rgba(54, 201, 143, 0.10),
+      0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(54, 201, 143, 0.25),
+      0 0 28px rgba(54, 201, 143, 0.18),
+      0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Timer pulse — ring around timer play button */
+@keyframes timer-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(91, 140, 255, 0.3); }
+  50%      { box-shadow: 0 0 0 6px rgba(91, 140, 255, 0); }
+}
+
+/* Border breathe — timer running card */
+@keyframes border-breathe {
+  0%, 100% { border-color: rgba(91, 140, 255, 0.20); }
+  50%      { border-color: rgba(91, 140, 255, 0.40); }
+}
+
+/* Shimmer for loading cards */
+@keyframes card-shimmer {
+  0%   { opacity: 0;   }
+  50%  { opacity: 0.5; }
+  100% { opacity: 0;   }
+}
+
+/* Confetti burst — perfect day */
+@keyframes confetti-pop {
+  0%   { transform: scale(0) rotate(0deg); opacity: 1; }
+  60%  { transform: scale(1.2) rotate(180deg); opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 0.8; }
+}
+
+/* Counter increment — number bump */
+@keyframes counter-bump {
+  0%   { transform: scale(1) translateY(0); }
+  30%  { transform: scale(1.15) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* Streak fire — used next to streak count */
+@keyframes flame-flicker {
+  0%, 100% { transform: scaleY(1) rotate(-2deg); }
+  25%      { transform: scaleY(1.1) rotate(1deg); }
+  50%      { transform: scaleY(0.95) rotate(-1deg); }
+  75%      { transform: scaleY(1.05) rotate(2deg); }
+}
+
+/* ─── Animation utility classes ────────────────────────────────────────────── */
+
+.anim-pulse {
+  animation: pulse 250ms var(--ease-spring);
+}
+
+.anim-shake {
+  animation: shake 450ms var(--ease-spring);
+}
+
+.anim-slide-up {
+  animation: slide-up var(--dur-modal) var(--ease-spring) forwards;
+}
+
+.anim-slide-down {
+  animation: slide-down var(--dur-normal) var(--ease-in) forwards;
+}
+
+.anim-fade-in {
+  animation: fade-in var(--dur-normal) var(--ease-out) forwards;
+}
+
+.anim-fade-out {
+  animation: fade-out var(--dur-fast) var(--ease-in) forwards;
+}
+
+.anim-scale-in {
+  animation: scale-fade-in var(--dur-normal) var(--ease-bounce) forwards;
+}
+
+.anim-counter-bump {
+  animation: counter-bump 200ms var(--ease-bounce);
+}
+
+/* Neon breathe (applied to .is-done cards that are "hero" or featured) */
+.anim-neon {
+  animation: neon-breathe 3s ease-in-out infinite;
+}
+
+/* ─── Transition utility classes ───────────────────────────────────────────── */
+
+.transition-all {
+  transition: all var(--dur-normal) var(--ease-spring);
+}
+
+.transition-fast {
+  transition: all var(--dur-fast) var(--ease-spring);
+}
+
+.transition-colors {
+  transition:
+    color            var(--dur-normal) ease,
+    background-color var(--dur-normal) ease,
+    border-color     var(--dur-normal) ease;
+}
+
+/* ─── Tap ripple (native feel) ─────────────────────────────────────────────── */
+
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(0);
+  animation: ripple-expand 500ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  0%   { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* ─── Reduced Motion ───────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

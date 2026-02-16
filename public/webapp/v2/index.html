@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Habit Hero</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="./style.css?v=RESTORE_V3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="logo-area">
+                <h1>Habit System <span class="badge">v2.0</span></h1>
+                <p class="subtitle">Глубокая синяя версия</p>
+            </div>
+            <div class="user-rank" onclick="openSettings()">
+                <div class="rank-text">
+                    <span class="rank-title">Статус:</span>
+                    <span class="rank-name" id="user-rank-name">Герой</span>
+                </div>
+                <div class="avatar-circle">🛡️</div>
+            </div>
+        </header>
+
+        <div class="xp-container bento-card">
+            <div class="xp-header">
+                <span>XP ПРОГРЕСС</span>
+                <span class="xp-badge">🪙 <span id="coin-balance">0</span></span>
+                <span class="level-badge">Уровень 1</span>
+            </div>
+            <div class="xp-bar-bg">
+                <div class="xp-bar-fill" style="width: 5%"></div>
+            </div>
+            <div class="xp-footer">
+                <span>0 / 100 XP</span>
+            </div>
+        </div>
+
+        <div class="stats-container bento-card">
+            <p class="section-label">СЕГОДНЯ</p>
+            <h2 id="daily-progress-text">Сегодня выполнено 0 из 0</h2>
+            <p class="subtext">Добавь первую привычку, чтобы начать.</p>
+            
+            <div class="progress-line-bg">
+                <div class="progress-line-fill" style="width: 0%"></div>
+            </div>
+
+            <div class="quote-box">
+                <p>"Сила в повторении."</p>
+            </div>
+        </div>
+
+        <div id="habits-list" class="habits-grid">
+            <div class="empty-state-card">
+                <div class="rocket-icon">🚀</div>
+                <h3>Твой путь начинается здесь.</h3>
+                <p>Готов к взлёту?</p>
+                <button class="action-btn" onclick="openCreateModal()">Создать первую привычку</button>
+            </div>
+        </div>
+
+        <button class="fab" onclick="openCreateModal()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('dashboard')">
+                <i class="fas fa-home"></i>
+                <span>Дашборд</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('habits')">
+                <i class="fas fa-check-circle"></i>
+                <span>Привычки</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('stats')">
+                <i class="fas fa-chart-bar"></i>
+                <span>Статистика</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('world')">
+                <i class="fas fa-globe"></i>
+                <span>Мир</span>
+            </div>
+        </nav>
+    </div>
+
+    <div id="modal-overlay" class="hidden">
+        <div class="modal-content">
+            <h3>Новая привычка</h3>
+            <input type="text" placeholder="Название (напр. Вода)" id="habit-name-input">
+            <div class="modal-actions">
+                <button onclick="closeModal()">Отмена</button>
+                <button onclick="saveHabit()" class="primary">Создать</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js?v=RESTORE_V3"></script>
+</body>
+</html>

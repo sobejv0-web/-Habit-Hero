@@ -1,0 +1,212 @@
+/* =============================================================================
+   features.css — Phase 4 Feature Styles
+   Heatmap widget (BEM), theme overrides, confetti canvas, DnD touch polish.
+   ============================================================================= */
+
+/* ─── Heatmap Widget (BEM naming) ──────────────────────────────────────────── */
+
+.heatmap__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-1);
+}
+
+.heatmap__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.heatmap__streak {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.heatmap__months {
+  display: flex;
+  gap: 2px;
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+  padding-left: 2px;
+  overflow: hidden;
+}
+
+.heatmap__month-label {
+  flex-shrink: 0;
+  text-transform: capitalize;
+}
+
+.heatmap__grid {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(10px, 1fr);
+  gap: 2px;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.heatmap__cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  min-width: 8px;
+  transition: opacity 150ms ease;
+}
+
+/* Color scale: l0 = nothing, l3 = fully done */
+.heatmap__cell--l0 { background: rgba(255, 255, 255, 0.04); }
+.heatmap__cell--l1 { background: rgba(54, 201, 143, 0.22); }
+.heatmap__cell--l2 { background: rgba(54, 201, 143, 0.50); }
+.heatmap__cell--l3 { background: rgba(54, 201, 143, 0.85); }
+
+/* hover tooltip feel */
+.heatmap__cell:hover {
+  opacity: 0.75;
+  cursor: default;
+}
+
+/* Heatmap wrapper (inside a card) */
+#heatmap-container {
+  padding: var(--space-3) var(--space-4);
+}
+
+#heatmap-container:empty {
+  display: none;
+}
+
+/* ─── Theme Override ───────────────────────────────────────────────────────── */
+/*
+ * Telegram injects --tg-theme-* vars automatically.
+ * The .theme-dark / .theme-light classes on <html> let the user
+ * force a specific appearance regardless of Telegram context.
+ */
+
+html.theme-dark {
+  --bg:           #0b0f17;
+  --bg-elevated:  #0f1626;
+  --card:         #111827;
+  --text:         #eef2f7;
+  --hint:         #9aa3b2;
+  --accent:       #5b8cff;
+  --accent-text:  #ffffff;
+  --link:         #5b8cff;
+  --line:         rgba(255, 255, 255, 0.08);
+  --glass-bg:     rgba(17, 24, 39, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
+html.theme-light {
+  --bg:           #f6f8fb;
+  --bg-elevated:  #ffffff;
+  --card:         #ffffff;
+  --text:         #1a1d24;
+  --hint:         #6b7280;
+  --accent:       #4778ff;
+  --accent-text:  #ffffff;
+  --link:         #4778ff;
+  --line:         rgba(0, 0, 0, 0.08);
+  --glass-bg:     rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  color-scheme: light;
+}
+
+/* Light mode specific overrides */
+html.theme-light .card,
+html.theme-light .bento-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+html.theme-light .heatmap__cell--l0 {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+html.theme-light .skeleton {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+html.theme-light .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 0, 0, 0.04),
+    transparent
+  );
+}
+
+/* ─── Confetti canvas (added by canvas-confetti CDN) ───────────────────────── */
+
+canvas.confetti-canvas {
+  pointer-events: none !important;
+}
+
+/* ─── DnD touch improvements ──────────────────────────────────────────────── */
+
+.bento-card[draggable="true"] {
+  touch-action: auto;
+  -webkit-user-drag: element;
+}
+
+/* Active drag on touch — slightly enlarge */
+.bento-card.is-dragging {
+  filter: brightness(1.05);
+}
+
+/* ─── Settings — Segmented extension ──────────────────────────────────────── */
+
+.settings-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.settings-card__subtitle {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.settings-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 44px;
+}
+
+.settings-field__text {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Danger zone buttons */
+#settings-delete-all,
+#settings-unlink {
+  width: 100%;
+  text-align: left;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+#settings-delete-all:hover {
+  background: rgba(240, 113, 120, 0.08);
+}
+
+#settings-unlink:hover {
+  background: rgba(91, 140, 255, 0.08);
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .heatmap__cell,
+  .bento-card.is-dragging {
+    transition: none;
+  }
+}

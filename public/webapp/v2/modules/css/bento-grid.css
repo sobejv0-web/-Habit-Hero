@@ -1,0 +1,511 @@
+/* =============================================================================
+   bento-grid.css — Habit System v2 · Bento Grid Layout
+   
+   2-column grid on mobile. Hero card spans both columns.
+   Square cards maintain 1:1 aspect ratio.
+   Stats widget sits below the grid.
+   Responsive: 3-col at 540px+, 4-col at 900px+ (tablet).
+   ============================================================================= */
+
+/* ─── Grid Container ──────────────────────────────────────────────────────── */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+  gap: var(--space-3);
+  width: 100%;
+  align-items: stretch;
+}
+
+@media (min-width: 540px) {
+  .bento-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+/* ─── Hero Card — spans full width ────────────────────────────────────────── */
+
+.bento-card.hero-card {
+  grid-column: 1 / -1;      /* span all columns at any breakpoint */
+  min-height: 140px;
+  padding: var(--space-5) var(--space-4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* Decorative gradient overlay for hero */
+.bento-card.hero-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 120% 80% at 80% 20%,
+      rgba(91, 140, 255, 0.12) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 80% 100% at 10% 90%,
+      rgba(54, 201, 143, 0.08) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 300ms ease;
+}
+
+.bento-card.hero-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero inner elements */
+.hero-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.hero-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.hero-emoji {
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.hero-sub {
+  font-size: 0.85rem;
+  color: var(--muted-soft);
+  line-height: 1.4;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+}
+
+.hero-progress {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.9;
+}
+
+.hero-cta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.hero-hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  opacity: 0.6;
+  margin-top: var(--space-1);
+}
+
+
+/* ─── Square Habit Card ───────────────────────────────────────────────────── */
+
+.bento-card.habit-card {
+  aspect-ratio: 1 / 1;
+  height: auto !important;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;      /* allow flex content to shrink without clipping */
+}
+
+.habit-card__emoji {
+  font-size: 1.6rem;
+  line-height: 1;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+}
+
+.habit-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: auto;
+}
+
+.habit-card__title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--text);
+  /* Clamp to 2 lines max */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.habit-card__meta {
+  font-size: 0.7rem;
+  color: var(--muted-soft);
+  font-weight: 500;
+}
+
+/* ─── Counter-specific UI inside card ─────────────────────────────────────── */
+
+.habit-card__counter {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: var(--space-1);
+}
+
+.habit-card__counter-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.habit-card__counter-target {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Ring-progress for counter cards */
+.habit-card__ring {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 32px;
+  height: 32px;
+}
+
+.habit-card__ring circle {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.habit-card__ring .ring-bg {
+  stroke: rgba(255, 255, 255, 0.06);
+}
+
+.habit-card__ring .ring-fill {
+  stroke: var(--accent);
+  transition: stroke-dashoffset 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ─── Timer-specific UI inside card ───────────────────────────────────────── */
+
+.habit-card__timer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.habit-card__timer-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.habit-card__timer-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  color: var(--text);
+  transition: background 200ms ease, transform 150ms ease;
+}
+
+.habit-card__timer-btn:active {
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Timer running pulse ring */
+.habit-card.is-timer-running .habit-card__timer-btn {
+  background: rgba(91, 140, 255, 0.18);
+  border-color: rgba(91, 140, 255, 0.3);
+  animation: timer-pulse 2s ease-in-out infinite;
+}
+
+/* ─── 5-min rule timer overlay inside card ────────────────────────────────── */
+
+.habit-card__five-min {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: rgba(11, 15, 23, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: inherit;
+  z-index: 2;
+  opacity: 0;
+  animation: fade-in 200ms ease forwards;
+}
+
+.habit-card__five-min-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.habit-card__five-min-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* ─── Stats Strip Widget ──────────────────────────────────────────────────── */
+
+.stats-strip {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stats-strip__main {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.stats-strip__value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.stats-strip__label {
+  font-size: 0.78rem;
+  color: var(--muted-soft);
+  font-weight: 500;
+}
+
+.stats-strip__meta {
+  font-size: 0.78rem;
+  color: var(--muted-soft);
+}
+
+.stats-strip__bar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  margin-top: var(--space-1);
+}
+
+.stats-strip__bar span {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--success));
+  transition: width 500ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* 100% complete — bar glows */
+.stats-strip.is-complete .stats-strip__bar span {
+  background: var(--success);
+  box-shadow: 0 0 12px rgba(54, 201, 143, 0.4);
+}
+
+/* ─── Dashboard containers ─────────────────────────────────────────────────── */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dashboard-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow-y: auto;
+  padding-bottom: 100px;
+}
+
+.dashboard-trial {
+  font-size: 0.8rem;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* ─── Empty state ──────────────────────────────────────────────────────────── */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+  text-align: center;
+  padding: var(--space-7) var(--space-4);
+}
+
+.empty-state h2 {
+  font-size: 1.15rem;
+}
+
+.empty-state p {
+  font-size: 0.85rem;
+  max-width: 260px;
+}
+
+/* ─── Habits tab containers ────────────────────────────────────────────────── */
+
+.habits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.habits-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.habits-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.habits-empty {
+  text-align: center;
+}
+
+#tab-habits {
+  overflow-y: auto;
+  padding-bottom: 120px !important;
+}
+
+/* ─── SortableJS Drag & Drop ───────────────────────────────────────────────── */
+
+/*
+ * Ghost: placeholder where item will be dropped.
+ * Shows a dashed border outline while dragging.
+ */
+.sortable-ghost {
+  opacity: 0.4;
+  border: 2px dashed var(--accent) !important;
+  background: rgba(91, 140, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+.sortable-ghost::before,
+.sortable-ghost::after {
+  display: none !important;
+}
+
+/*
+ * Drag: the element being dragged.
+ * iOS Home Screen-style: slightly enlarged, shadows, elevated z-index.
+ */
+.sortable-drag {
+  transform: scale(1.05) !important;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  z-index: 9999 !important;
+  opacity: 1 !important;
+  cursor: grabbing !important;
+}
+
+/*
+ * Chosen: item about to be dragged (after delay).
+ * Subtle feedback that drag will start.
+ */
+.sortable-chosen {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/*
+ * Prevent touch scrolling interference during drag.
+ * Applied to cards when DnD is enabled.
+ */
+.bento-grid.is-sorting {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.bento-grid.is-sorting .bento-card {
+  cursor: grab;
+}
+
+.bento-grid.is-sorting .hero-card {
+  /* Hero card is not draggable */
+  cursor: default;
+}
+
+/* Legacy fallback classes (for compatibility) */
+.bento-card.is-dragging {
+  opacity: 0.5;
+  transform: scale(0.96);
+  z-index: 10;
+  transition: none;
+}
+
+.bento-card.is-drag-over {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px rgba(91, 140, 255, 0.3);
+}
+
+/* Drop placeholder */
+.bento-drop-placeholder {
+  border: 2px dashed rgba(91, 140, 255, 0.3);
+  border-radius: var(--radius-xl);
+  background: rgba(91, 140, 255, 0.04);
+  pointer-events: none;
+}

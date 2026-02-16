@@ -1,0 +1,481 @@
+/* =============================================================================
+   cards.css — Habit System v2 · Card Styling
+   
+   Three visual states per card:
+     1. .is-idle   (default) → Glassmorphism: frosted glass, soft border
+     2. .is-done              → Neon glow, vibrant green accent, solid feel
+     3. .is-skip              → Muted red, subdued, "crossed out" vibe
+   
+   Hero variant gets gradient overlays.
+   All transitions use Apple-style spring curves.
+   ============================================================================= */
+
+/* ─── Base Card — Glassmorphism Foundation ─────────────────────────────────── */
+
+.card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.card--sm { padding: var(--space-3); }
+.card--md { padding: var(--space-4); }
+.card--lg { padding: var(--space-5); }
+
+/* ─── Bento Card — Interactive Habit Card ─────────────────────────────────── */
+
+.bento-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  /* Apple-style spring transition */
+  transition:
+    background    300ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color  300ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow    300ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform     200ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity       200ms ease;
+}
+
+/* ─── Tap feedback ─────────────────────────────────────────────────────────── */
+
+.bento-card:active {
+  transform: scale(0.97);
+  transition-duration: 80ms;
+}
+
+/* Keyboard focus visible */
+.bento-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── State: IDLE (not checked in) ─────────────────────────────────────────── */
+
+.bento-card.is-idle {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+/* Soft inner highlight — top edge catch-light */
+.bento-card.is-idle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── State: DONE — Neon Glow ──────────────────────────────────────────────── */
+
+.bento-card.is-done {
+  background: rgba(54, 201, 143, 0.10);
+  border-color: rgba(54, 201, 143, 0.30);
+  box-shadow:
+    0 0 0 1px rgba(54, 201, 143, 0.15),
+    0 0 20px rgba(54, 201, 143, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Neon edge glow — subtle top highlight in green */
+.bento-card.is-done::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(54, 201, 143, 0.5),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Checkmark indicator */
+.bento-card.is-done::before {
+  content: '✓';
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(54, 201, 143, 0.2);
+  border: 1.5px solid rgba(54, 201, 143, 0.5);
+  color: var(--success);
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  animation: check-pop 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Done state text color shift */
+.bento-card.is-done .habit-card__title {
+  color: var(--success);
+}
+
+.bento-card.is-done .habit-card__meta {
+  color: rgba(54, 201, 143, 0.7);
+}
+
+.bento-card.is-done .hero-title {
+  color: var(--success);
+}
+
+.bento-card.is-done .hero-sub {
+  color: rgba(54, 201, 143, 0.7);
+}
+
+/* ─── State: SKIP — Subdued Red ────────────────────────────────────────────── */
+
+.bento-card.is-skip {
+  background: rgba(240, 113, 120, 0.06);
+  border-color: rgba(240, 113, 120, 0.20);
+  box-shadow:
+    0 0 0 1px rgba(240, 113, 120, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.bento-card.is-skip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(240, 113, 120, 0.3),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Skip indicator */
+.bento-card.is-skip::before {
+  content: '—';
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(240, 113, 120, 0.12);
+  border: 1.5px solid rgba(240, 113, 120, 0.35);
+  color: var(--danger);
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+/* Skip text muting */
+.bento-card.is-skip .habit-card__title {
+  opacity: 0.5;
+  text-decoration: line-through;
+  text-decoration-color: rgba(240, 113, 120, 0.4);
+}
+
+.bento-card.is-skip .habit-card__meta {
+  color: rgba(240, 113, 120, 0.6);
+}
+
+.bento-card.is-skip .hero-title {
+  opacity: 0.5;
+}
+
+/* ─── State: ACTIVE — first pending (subtle accent pulse) ──────────────────── */
+
+.bento-card.is-active {
+  border-color: rgba(91, 140, 255, 0.25);
+  box-shadow:
+    0 0 0 1px rgba(91, 140, 255, 0.12),
+    0 4px 20px rgba(91, 140, 255, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.bento-card.is-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(91, 140, 255, 0.4),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── State: FOCUS (highlighted during routine) ────────────────────────────── */
+
+.bento-card.is-focus {
+  border-color: rgba(91, 140, 255, 0.35);
+  box-shadow:
+    0 0 0 2px rgba(91, 140, 255, 0.2),
+    0 0 30px rgba(91, 140, 255, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── State: LOADING — in-flight API call ──────────────────────────────────── */
+
+.bento-card.is-loading {
+  pointer-events: none;
+}
+
+.bento-card.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.02);
+  animation: card-shimmer 1.2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ─── Hero Card States ─────────────────────────────────────────────────────── */
+
+/* Hero done — stronger neon, gradient shifts to green */
+.hero-card.is-done::before {
+  background:
+    radial-gradient(
+      ellipse 120% 80% at 80% 20%,
+      rgba(54, 201, 143, 0.15) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 80% 100% at 10% 90%,
+      rgba(54, 201, 143, 0.10) 0%,
+      transparent 50%
+    );
+}
+
+/* Hero skip — gradient fades */
+.hero-card.is-skip::before {
+  opacity: 0.3;
+}
+
+/* ─── Card with timer running — breathing border ──────────────────────────── */
+
+.bento-card.is-timer-running {
+  border-color: rgba(91, 140, 255, 0.3);
+  animation: border-breathe 3s ease-in-out infinite;
+}
+
+/* ─── Card inline list (for Habits tab) ────────────────────────────────────── */
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  min-height: 56px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.list-item:active {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.list-item__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.list-item__title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item__subtitle {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.list-item__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ─── Status chips ─────────────────────────────────────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  transition: all 200ms ease;
+}
+
+.chip--done {
+  color: var(--success);
+  border-color: rgba(54, 201, 143, 0.3);
+  background: rgba(54, 201, 143, 0.1);
+}
+
+.chip--skip {
+  color: var(--danger);
+  border-color: rgba(240, 113, 120, 0.3);
+  background: rgba(240, 113, 120, 0.08);
+}
+
+/* ─── Habit add form card ──────────────────────────────────────────────────── */
+
+.habit-add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.habit-add__title {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Type selector */
+.type-selector {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.type-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  transition: all 200ms ease;
+}
+
+.type-btn:active {
+  transform: scale(0.96);
+}
+
+.type-btn.is-active {
+  color: var(--accent-text);
+  background: rgba(91, 140, 255, 0.18);
+  border-color: rgba(91, 140, 255, 0.35);
+}
+
+/* Counter / Timer config panels */
+.counter-config,
+.timer-config {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+}
+
+/* Quick chips */
+.chip-list {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.chip-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  transition: all 200ms ease;
+  white-space: nowrap;
+}
+
+.chip-btn:active {
+  background: rgba(255, 255, 255, 0.08);
+  transform: scale(0.96);
+}
+
+/* ─── Locked/Premium cards ─────────────────────────────────────────────────── */
+
+.locked-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.locked-card--blur::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 15, 23, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.locked-card__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+}

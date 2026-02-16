@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pm2 restart:*)",
+      "Bash(pm2 list:*)",
+      "Bash(npm run dev)"
+    ]
+  }
+}
