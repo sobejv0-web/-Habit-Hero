@@ -1,0 +1,213 @@
+/* =============================================================================
+   tokens.css — "Friendly Premium" Design System
+   
+   Single source of truth for ALL design tokens.
+   Loaded FIRST, before any component CSS.
+   
+   Sections:
+     1. Semantic colors (primary, success, warning, danger, xp)
+     2. Background layers (dark theme)
+     3. Text colors
+     4. Borders
+     5. Gradients
+     6. Spacing & radius
+     7. Shadows
+     8. Typography
+     9. Layout constants
+    10. Backward-compatible aliases (for existing module CSS)
+   ============================================================================= */
+
+:root {
+  color-scheme: dark;
+
+  /* ═══════════════════════════════════════════════════
+     1. SEMANTIC COLORS
+     ═══════════════════════════════════════════════════ */
+
+  /* Success / Done — Vibrant Green */
+  --color-success:       #10B981;
+  --color-success-light: #34D399;
+  --color-success-dark:  #059669;
+  --color-success-glow:  rgba(16, 185, 129, 0.4);
+
+  /* Primary / Action — Electric Blue */
+  --color-primary:       #3B82F6;
+  --color-primary-light: #60A5FA;
+  --color-primary-dark:  #2563EB;
+  --color-primary-glow:  rgba(59, 130, 246, 0.4);
+
+  /* Warning / Streak — Golden Yellow */
+  --color-warning:       #F59E0B;
+  --color-warning-light: #FBBF24;
+  --color-warning-glow:  rgba(245, 158, 11, 0.4);
+
+  /* Danger / Skip — Soft Red */
+  --color-danger:        #EF4444;
+  --color-danger-light:  #F87171;
+  --color-danger-glow:   rgba(239, 68, 68, 0.4);
+
+  /* XP / Coins — Purple & Gold */
+  --color-xp:            #8B5CF6;
+  --color-xp-light:      #A78BFA;
+  --color-xp-glow:       rgba(139, 92, 246, 0.4);
+  --color-coins:         #F59E0B;
+
+  /* ═══════════════════════════════════════════════════
+     2. BACKGROUND LAYERS (darkest → lightest)
+     ═══════════════════════════════════════════════════ */
+
+  --bg-base:        #0F0F0F;
+  --bg-surface:     #1A1A1A;
+  --bg-card:        #242424;
+  --bg-card-hover:  #2E2E2E;
+  --bg-elevated:    #333333;
+
+  /* ═══════════════════════════════════════════════════
+     3. TEXT COLORS
+     ═══════════════════════════════════════════════════ */
+
+  --text-primary:   #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary:  rgba(255, 255, 255, 0.5);
+  --text-muted:     rgba(255, 255, 255, 0.3);
+
+  /* ═══════════════════════════════════════════════════
+     4. BORDERS
+     ═══════════════════════════════════════════════════ */
+
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong:  rgba(255, 255, 255, 0.15);
+
+  /* ═══════════════════════════════════════════════════
+     5. GRADIENTS
+     ═══════════════════════════════════════════════════ */
+
+  /* Card state gradients */
+  --gradient-done:    linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  --gradient-active:  linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+  --gradient-streak:  linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.05) 100%);
+  --gradient-skip:    linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(239, 68, 68, 0.04) 100%);
+
+  /* Hero card */
+  --gradient-hero:    linear-gradient(145deg, #1E3A5F 0%, #0F172A 100%);
+
+  /* Premium / XP glow */
+  --gradient-premium: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --gradient-xp:      linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  --gradient-coins:   linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+
+  /* ═══════════════════════════════════════════════════
+     6. SPACING & RADIUS
+     ═══════════════════════════════════════════════════ */
+
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+
+  /* Numeric aliases used by existing modules */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+
+  /* ═══════════════════════════════════════════════════
+     7. SHADOWS (dark theme — stronger than light)
+     ═══════════════════════════════════════════════════ */
+
+  --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl:  0 12px 48px rgba(0, 0, 0, 0.6);
+
+  --shadow-glow-success: 0 0 20px var(--color-success-glow);
+  --shadow-glow-primary: 0 0 20px var(--color-primary-glow);
+  --shadow-glow-warning: 0 0 20px var(--color-warning-glow);
+  --shadow-glow-danger:  0 0 20px var(--color-danger-glow);
+  --shadow-glow-xp:      0 0 20px var(--color-xp-glow);
+
+  /* ═══════════════════════════════════════════════════
+     8. TYPOGRAPHY
+     ═══════════════════════════════════════════════════ */
+
+  --font-sans:  -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto, system-ui, sans-serif;
+  --font-mono:  'SF Mono', Monaco, 'Courier New', monospace;
+
+  --text-xs:  0.75rem;    /* 12px */
+  --text-sm:  0.8125rem;  /* 13px */
+  --text-base: 0.875rem;  /* 14px */
+  --text-md:  1rem;       /* 16px */
+  --text-lg:  1.125rem;   /* 18px */
+  --text-xl:  1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+
+  /* ═══════════════════════════════════════════════════
+     9. LAYOUT CONSTANTS
+     ═══════════════════════════════════════════════════ */
+
+  --tabbar-h:     56px;
+  --tabbar-pad-y: 6px;
+  --tabbar-icon:  20px;
+
+  --dur-fast:   150ms;
+  --dur-normal: 250ms;
+  --dur-slow:   400ms;
+
+  /* ═══════════════════════════════════════════════════
+     10. BACKWARD-COMPATIBLE ALIASES
+     Maps old token names → new design system.
+     Existing module CSS (components, bento-grid, cards,
+     modals, features) references these names.
+     ═══════════════════════════════════════════════════ */
+
+  /* Background */
+  --bg:            var(--bg-base);
+  --card:          var(--bg-card);
+
+  /* Text */
+  --text:          var(--text-primary);
+  --hint:          var(--text-tertiary);
+  --muted:         var(--text-secondary);
+  --muted-soft:    var(--text-tertiary);
+
+  /* Semantic colors */
+  --accent:        var(--color-primary);
+  --accent-text:   #FFFFFF;
+  --accent-strong: var(--color-primary-dark);
+  --link:          var(--color-primary);
+  --success:       var(--color-success);
+  --danger:        var(--color-danger);
+  --warning:       var(--color-warning);
+
+  /* Borders & lines */
+  --line:          var(--border-subtle);
+  --glass-bg:      rgba(26, 26, 26, 0.55);
+  --glass-border:  var(--border-subtle);
+  --glass-blur:    12px;
+
+  /* Glows */
+  --neon-green:      rgba(16, 185, 129, 0.35);
+  --neon-green-glow: var(--shadow-glow-success);
+  --neon-blue:       rgba(59, 130, 246, 0.35);
+  --neon-blue-glow:  var(--shadow-glow-primary);
+  --neon-red:        rgba(239, 68, 68, 0.25);
+
+  /* Shadows */
+  --shadow-soft:       var(--shadow-md);
+  --shadow-glow-green: var(--shadow-glow-success);
+  --shadow-glow-blue:  var(--shadow-glow-primary);
+}

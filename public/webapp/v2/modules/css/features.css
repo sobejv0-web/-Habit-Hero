@@ -81,63 +81,10 @@
 
 /* ─── Theme Override ───────────────────────────────────────────────────────── */
 /*
- * Telegram injects --tg-theme-* vars automatically.
- * The .theme-dark / .theme-light classes on <html> let the user
- * force a specific appearance regardless of Telegram context.
+ * Theme tokens are now defined in /css/tokens.css (dark-only).
+ * Backward-compatible aliases (--bg, --text, --accent, etc.) are provided there.
+ * No per-theme overrides needed — single dark palette by design.
  */
-
-html.theme-dark {
-  --bg:           #0b0f17;
-  --bg-elevated:  #0f1626;
-  --card:         #111827;
-  --text:         #eef2f7;
-  --hint:         #9aa3b2;
-  --accent:       #5b8cff;
-  --accent-text:  #ffffff;
-  --link:         #5b8cff;
-  --line:         rgba(255, 255, 255, 0.08);
-  --glass-bg:     rgba(17, 24, 39, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  color-scheme: dark;
-}
-
-html.theme-light {
-  --bg:           #f6f8fb;
-  --bg-elevated:  #ffffff;
-  --card:         #ffffff;
-  --text:         #1a1d24;
-  --hint:         #6b7280;
-  --accent:       #4778ff;
-  --accent-text:  #ffffff;
-  --link:         #4778ff;
-  --line:         rgba(0, 0, 0, 0.08);
-  --glass-bg:     rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(0, 0, 0, 0.06);
-  color-scheme: light;
-}
-
-/* Light mode specific overrides */
-html.theme-light .card,
-html.theme-light .bento-card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
-}
-
-html.theme-light .heatmap__cell--l0 {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-html.theme-light .skeleton {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-html.theme-light .skeleton::after {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 0, 0, 0.04),
-    transparent
-  );
-}
 
 /* ─── Confetti canvas (added by canvas-confetti CDN) ───────────────────────── */
 

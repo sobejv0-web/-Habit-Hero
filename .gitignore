@@ -9,3 +9,4 @@ public/temp_shares/*.png
 *.old
 .codex/
 .DS_Store
+*.db

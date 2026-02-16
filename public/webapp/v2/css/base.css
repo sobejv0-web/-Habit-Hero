@@ -1,0 +1,119 @@
+/* =============================================================================
+   base.css — Global Reset & Body Styles
+   
+   Loaded after tokens.css, before component CSS.
+   Contains: box-sizing reset, body defaults, typography base,
+   element resets (a, button, input), utility classes.
+   ============================================================================= */
+
+/* ── Box-Model Reset ─────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ── HTML ────────────────────────────────────────── */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+/* ── Body ────────────────────────────────────────── */
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-base);
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ── Element Resets ──────────────────────────────── */
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-primary-light);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Typography ──────────────────────────────────── */
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+h1 { font-size: 1.75rem; line-height: 1.2; font-weight: 800; }
+h2 { font-size: 1.25rem; line-height: 1.3; }
+h3 { font-size: 1rem;    line-height: 1.4; }
+
+p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Accessibility ───────────────────────────────── */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
