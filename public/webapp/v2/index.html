@@ -55,10 +55,13 @@
 
                 <!-- Stats strip -->
                 <div class="stats-strip">
-                    <span id="stats-progress">0/0</span>
-                    <span id="stats-meta"></span>
-                    <div class="stats-strip-bar-bg">
-                        <div id="stats-strip-bar" class="stats-strip-bar" style="width:0%"></div>
+                    <div class="stats-strip__main">
+                        <span class="stats-strip__value" id="stats-progress">0/0</span>
+                        <span class="stats-strip__label">виконано</span>
+                    </div>
+                    <span class="stats-strip__meta" id="stats-meta"></span>
+                    <div class="stats-strip__bar">
+                        <span id="stats-strip-bar" style="--progress:0%"></span>
                     </div>
                 </div>
 
@@ -141,12 +144,7 @@
     </div>
 
     <!-- ═══════ Error Log (дебаг — фіксований зверху) ═══════ -->
-    <div id="error-log" hidden style="
-        position:fixed;top:0;left:0;right:0;
-        max-height:200px;overflow-y:auto;
-        background:rgba(0,0,0,0.95);color:#ff6b6b;
-        font-size:11px;padding:8px;z-index:9999;
-    "></div>
+    <div id="error-log" hidden></div>
 
     <!-- ═══════ Bottom Tab Bar ═══════ -->
     <nav class="tabbar">
