@@ -1,101 +1,173 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Habit Hero</title>
+
+    <!-- Telegram SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="./style.css?v=RESTORE_V3">
+
+    <!-- Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <!-- Module CSS (порядок має значення!) -->
+    <link rel="stylesheet" href="./modules/css/components.css">
+    <link rel="stylesheet" href="./modules/css/bento-grid.css">
+    <link rel="stylesheet" href="./modules/css/cards.css">
+    <link rel="stylesheet" href="./modules/css/animations.css">
+    <link rel="stylesheet" href="./modules/css/features.css">
+    <link rel="stylesheet" href="./modules/css/modals.css">
+
+    <!-- Font Awesome (іконки) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="app">
-        <header class="header">
-            <div class="logo-area">
-                <h1>Habit System <span class="badge">v2.0</span></h1>
-                <p class="subtitle">Глубокая синяя версия</p>
-            </div>
-            <div class="user-rank" onclick="openSettings()">
-                <div class="rank-text">
-                    <span class="rank-title">Статус:</span>
-                    <span class="rank-name" id="user-rank-name">Герой</span>
+
+    <!-- ═══════ Overlay: "відкрий в Telegram" ═══════ -->
+    <div id="telegram-only" hidden>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;color:#fff;">
+            <h2>Habit Hero</h2>
+            <p style="color:#9ca3af;margin-top:8px;">Open this app inside Telegram</p>
+        </div>
+    </div>
+
+    <!-- ═══════ App Shell ═══════ -->
+    <div id="app-shell">
+
+        <!-- ──── Panel: DASHBOARD ──── -->
+        <div class="panel is-active" data-tab="dashboard">
+
+            <!-- Skeleton (завантаження) -->
+            <div id="dashboard-skeleton">
+                <div class="skeleton-card" style="height:140px;border-radius:16px;background:#1f2937;margin-bottom:12px;"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="skeleton-card" style="height:120px;border-radius:16px;background:#1f2937;"></div>
+                    <div class="skeleton-card" style="height:120px;border-radius:16px;background:#1f2937;"></div>
                 </div>
-                <div class="avatar-circle">🛡️</div>
             </div>
-        </header>
 
-        <div class="xp-container bento-card">
-            <div class="xp-header">
-                <span>XP ПРОГРЕСС</span>
-                <span class="xp-badge">🪙 <span id="coin-balance">0</span></span>
-                <span class="level-badge">Уровень 1</span>
+            <!-- Content (після завантаження) -->
+            <div id="dashboard-content" hidden>
+                <!-- Trial banner -->
+                <div id="dashboard-trial" hidden></div>
+
+                <!-- Stats strip -->
+                <div class="stats-strip">
+                    <span id="stats-progress">0/0</span>
+                    <span id="stats-meta"></span>
+                    <div class="stats-strip-bar-bg">
+                        <div id="stats-strip-bar" class="stats-strip-bar" style="width:0%"></div>
+                    </div>
+                </div>
+
+                <!-- Bento Grid — всі картки генерує renderer.js -->
+                <div id="bento-grid" class="bento-grid"></div>
+
+                <!-- Heatmap (всередині dashboard) -->
+                <div id="heatmap-wrapper" hidden>
+                    <div id="heatmap-container"></div>
+                </div>
             </div>
-            <div class="xp-bar-bg">
-                <div class="xp-bar-fill" style="width: 5%"></div>
+
+            <!-- Empty state -->
+            <div id="dashboard-empty" hidden></div>
+
+            <!-- Error state -->
+            <div id="dashboard-error" hidden></div>
+        </div>
+
+        <!-- ──── Panel: HABITS ──── -->
+        <div class="panel" data-tab="habits">
+            <div id="habits-skeleton">
+                <div class="skeleton-card" style="height:60px;border-radius:12px;background:#1f2937;margin-bottom:8px;"></div>
+                <div class="skeleton-card" style="height:60px;border-radius:12px;background:#1f2937;margin-bottom:8px;"></div>
             </div>
-            <div class="xp-footer">
-                <span>0 / 100 XP</span>
+            <div id="habits-content" hidden>
+                <div id="habits-list"></div>
+            </div>
+            <div id="habits-empty" hidden></div>
+        </div>
+
+        <!-- ──── Panel: STATS ──── -->
+        <div class="panel" data-tab="stats">
+            <div id="stats-skeleton">
+                <div class="skeleton-card" style="height:200px;border-radius:16px;background:#1f2937;"></div>
+            </div>
+            <div id="stats-content" hidden>
+                <!-- Stats content rendered by JS -->
             </div>
         </div>
 
-        <div class="stats-container bento-card">
-            <p class="section-label">СЕГОДНЯ</p>
-            <h2 id="daily-progress-text">Сегодня выполнено 0 из 0</h2>
-            <p class="subtext">Добавь первую привычку, чтобы начать.</p>
-            
-            <div class="progress-line-bg">
-                <div class="progress-line-fill" style="width: 0%"></div>
+        <!-- ──── Panel: SETTINGS ──── -->
+        <div class="panel" data-tab="settings">
+            <div id="settings-skeleton">
+                <div class="skeleton-card" style="height:300px;border-radius:16px;background:#1f2937;"></div>
             </div>
-
-            <div class="quote-box">
-                <p>"Сила в повторении."</p>
+            <div id="settings-content" hidden>
+                <!-- Settings rendered by settings.js -->
             </div>
         </div>
 
-        <div id="habits-list" class="habits-grid">
-            <div class="empty-state-card">
-                <div class="rocket-icon">🚀</div>
-                <h3>Твой путь начинается здесь.</h3>
-                <p>Готов к взлёту?</p>
-                <button class="action-btn" onclick="openCreateModal()">Создать первую привычку</button>
-            </div>
-        </div>
+    </div>
 
-        <button class="fab" onclick="openCreateModal()">
-            <i class="fas fa-plus"></i>
+    <!-- ═══════ Toast Container (сповіщення) ═══════ -->
+    <div id="toast-container"></div>
+
+    <!-- ═══════ Context Sheet (довге натискання на картку) ═══════ -->
+    <div id="sheet-backdrop" hidden></div>
+    <div id="context-sheet" hidden>
+        <div id="context-sheet-title"></div>
+        <!-- Кнопки дій генеруються JS'ом -->
+    </div>
+
+    <!-- ═══════ 5-minute Rule Modal ═══════ -->
+    <div id="five-min-backdrop" hidden></div>
+    <div id="five-min-modal" hidden>
+        <!-- Контент генерується JS'ом -->
+    </div>
+
+    <!-- ═══════ Focus Mode Overlay ═══════ -->
+    <div id="focus-overlay" hidden>
+        <div id="focus-routine"></div>
+        <div id="focus-title"></div>
+        <div id="focus-sub"></div>
+        <div id="focus-step"></div>
+        <div id="focus-timer" hidden>
+            <div id="focus-timer-value"></div>
+        </div>
+        <div id="focus-progress-bar" style="width:0%"></div>
+    </div>
+
+    <!-- ═══════ Error Log (дебаг — фіксований зверху) ═══════ -->
+    <div id="error-log" hidden style="
+        position:fixed;top:0;left:0;right:0;
+        max-height:200px;overflow-y:auto;
+        background:rgba(0,0,0,0.95);color:#ff6b6b;
+        font-size:11px;padding:8px;z-index:9999;
+    "></div>
+
+    <!-- ═══════ Bottom Tab Bar ═══════ -->
+    <nav class="tabbar">
+        <button class="tabbar__item is-active" data-tab="dashboard" aria-selected="true">
+            <i class="fas fa-th-large"></i>
+            <span>Dashboard</span>
         </button>
+        <button class="tabbar__item" data-tab="habits" aria-selected="false">
+            <i class="fas fa-check-circle"></i>
+            <span>Habits</span>
+        </button>
+        <button class="tabbar__item" data-tab="stats" aria-selected="false">
+            <i class="fas fa-chart-bar"></i>
+            <span>Stats</span>
+        </button>
+        <button class="tabbar__item" data-tab="settings" aria-selected="false">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </button>
+    </nav>
 
-        <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab('dashboard')">
-                <i class="fas fa-home"></i>
-                <span>Дашборд</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('habits')">
-                <i class="fas fa-check-circle"></i>
-                <span>Привычки</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('stats')">
-                <i class="fas fa-chart-bar"></i>
-                <span>Статистика</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('world')">
-                <i class="fas fa-globe"></i>
-                <span>Мир</span>
-            </div>
-        </nav>
-    </div>
-
-    <div id="modal-overlay" class="hidden">
-        <div class="modal-content">
-            <h3>Новая привычка</h3>
-            <input type="text" placeholder="Название (напр. Вода)" id="habit-name-input">
-            <div class="modal-actions">
-                <button onclick="closeModal()">Отмена</button>
-                <button onclick="saveHabit()" class="primary">Создать</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="./script.js?v=RESTORE_V3"></script>
+    <!-- ═══════ Entry Point — ES Module ═══════ -->
+    <script type="module" src="./modules/app.js"></script>
 </body>
 </html>
