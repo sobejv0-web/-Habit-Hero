@@ -26,6 +26,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  color-scheme: dark;
+  /* Pin dark bg on html — beats Telegram SDK injection */
+  background: var(--bg-base, #0F0F0F) !important;
+  background-color: var(--bg-base, #0F0F0F) !important;
 }
 
 /* ── Body ────────────────────────────────────────── */
@@ -35,23 +39,33 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
-  color: var(--text-primary);
-  background: var(--bg-base);
+  color: var(--text-primary, #FFFFFF) !important;
+  background: var(--bg-base, #0F0F0F) !important;
+  background-color: var(--bg-base, #0F0F0F) !important;
   overflow-x: hidden;
   overscroll-behavior-y: contain;
   min-height: 100vh;
   min-height: 100dvh;
 }
 
+/* ── Telegram WebApp override ────────────────────── */
+/* Telegram SDK may inject light styles; force dark on common targets */
+#app,
+.app,
+#app-shell {
+  background: transparent;
+  color: inherit;
+}
+
 /* ── Element Resets ──────────────────────────────── */
 
 a {
-  color: var(--color-primary);
+  color: var(--color-primary, #3B82F6);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-primary-light);
+  color: var(--color-primary-light, #60A5FA);
 }
 
 button {

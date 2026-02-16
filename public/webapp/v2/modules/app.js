@@ -30,7 +30,13 @@ if (!isInTelegram) {
   if (overlay)  overlay.hidden = false;
   if (appShell) appShell.hidden = true;
 } else {
-  try { tg.ready(); tg.expand(); } catch {}
+  try {
+    tg.ready();
+    tg.expand();
+    // Force dark background in Telegram chrome
+    tg.setHeaderColor('#0F0F0F');
+    tg.setBackgroundColor('#0F0F0F');
+  } catch {}
   setInitData(tg.initData || '');
 }
 
