@@ -518,12 +518,14 @@ function createApp({ db, bot }) {
 
     if (!premiumActive) {
       const habitCount = statements.getActiveHabitsCount.get(userId).count || 0;
+      console.log('[createHabit] userId:', userId, 'habitCount:', habitCount, 'limit:', FREE_HABIT_LIMIT, 'plan:', dbUser?.plan);
       if (habitCount >= FREE_HABIT_LIMIT) {
         res.status(403).json({
           ok: false,
-          error: 'Premium required',
+          error: `Ліміт ${FREE_HABIT_LIMIT} звичок для безкоштовного плану`,
           code: 'premium_required',
           limit: FREE_HABIT_LIMIT,
+          current: habitCount,
         });
         return;
       }
