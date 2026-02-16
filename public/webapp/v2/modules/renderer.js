@@ -830,12 +830,19 @@ export function render(state, prevState, actions) {
 
   // ── Stats tab ──
   const onStats = state.ui.activeTab === 'stats';
-  if (onStats && tabChanged) {
+  if (onStats && (tabChanged || justLoaded)) {
     // Hide skeleton, show content
     const statsSkeleton = document.getElementById('stats-skeleton');
     const statsContent  = document.getElementById('stats-content');
     if (statsSkeleton) statsSkeleton.hidden = true;
     if (statsContent)  statsContent.hidden  = false;
+
+    // Show/hide empty state based on whether user has habits
+    const statsEmpty  = document.getElementById('stats-empty-state');
+    const statsCharts = document.getElementById('stats-charts');
+    const habits = Selectors.habits(state);
+    if (statsEmpty) statsEmpty.hidden = habits.length > 0;
+    if (statsCharts) statsCharts.hidden = habits.length === 0;
   }
 
   // ── Settings tab ──

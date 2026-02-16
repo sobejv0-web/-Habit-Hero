@@ -182,6 +182,11 @@
   align-items: flex-start;
 }
 
+.inline-form > .input {
+  flex: 1;
+  min-width: 0;
+}
+
 .inline-form__field {
   flex: 1;
   min-width: 0;

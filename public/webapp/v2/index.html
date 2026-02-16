@@ -75,10 +75,24 @@
             </div>
 
             <!-- Empty state -->
-            <div id="dashboard-empty" hidden></div>
+            <div id="dashboard-empty" hidden>
+                <div class="empty-state">
+                    <div class="empty-state__icon">🚀</div>
+                    <h2>Почни свій шлях!</h2>
+                    <p>Додай першу звичку і відстежуй прогрес кожен день</p>
+                    <button id="dashboard-empty-cta" class="primary primary--solid">+ Додати першу звичку</button>
+                </div>
+            </div>
 
             <!-- Error state -->
-            <div id="dashboard-error" hidden></div>
+            <div id="dashboard-error" hidden>
+                <div class="empty-state">
+                    <div class="empty-state__icon">⚠️</div>
+                    <h2>Щось пішло не так</h2>
+                    <p>Не вдалося завантажити дані</p>
+                    <button id="dashboard-retry" class="primary">Спробувати ще раз</button>
+                </div>
+            </div>
         </div>
 
         <!-- ──── Panel: HABITS ──── -->
@@ -89,8 +103,41 @@
             </div>
             <div id="habits-content" hidden>
                 <div id="habits-list"></div>
+
+                <!-- Add habit form -->
+                <div class="habit-add">
+                    <div class="habit-add__title">Нова звичка</div>
+                    <div class="inline-form">
+                        <input type="text" id="habit-add-input" class="input" placeholder="Назва звички" autocomplete="off">
+                        <button id="habit-add-btn" class="primary primary--solid btn--icon" aria-label="Додати">+</button>
+                    </div>
+                    <div class="type-selector">
+                        <button class="type-btn is-active" data-type="boolean">✓ Так/Ні</button>
+                        <button class="type-btn" data-type="counter">🔢 Лічильник</button>
+                        <button class="type-btn" data-type="timer">⏱ Таймер</button>
+                    </div>
+                    <div id="counter-config" class="counter-config" hidden>
+                        <input type="number" id="counter-target" class="input" placeholder="Ціль (напр. 8)" min="1">
+                        <input type="number" id="counter-step" class="input" placeholder="Крок (за замовч. 1)" min="1">
+                    </div>
+                    <div id="timer-config" class="timer-config" hidden>
+                        <input type="number" id="timer-duration" class="input" placeholder="Тривалість (хвилини)" min="1">
+                    </div>
+                    <div id="habit-quick-chips" class="chip-list">
+                        <button class="chip-btn" data-title="Вода" data-type="counter" data-target="8" data-step="1">💧 Вода</button>
+                        <button class="chip-btn" data-title="Медитація" data-type="timer" data-duration="10">🧘 Медитація</button>
+                        <button class="chip-btn" data-title="Читання">📚 Читання</button>
+                        <button class="chip-btn" data-title="Спорт">💪 Спорт</button>
+                        <button class="chip-btn" data-title="Ранній підйом">⏰ Ранній підйом</button>
+                    </div>
+                </div>
             </div>
-            <div id="habits-empty" hidden></div>
+            <div id="habits-empty" hidden>
+                <div class="empty-state">
+                    <div class="empty-state__icon">📝</div>
+                    <p>Тут будуть твої звички. Додай першу нижче 👇</p>
+                </div>
+            </div>
         </div>
 
         <!-- ──── Panel: STATS ──── -->
@@ -99,7 +146,14 @@
                 <div class="skeleton-card" style="height:200px;border-radius:16px;background:#1f2937;"></div>
             </div>
             <div id="stats-content" hidden>
-                <!-- Stats content rendered by JS -->
+                <div id="stats-charts">
+                    <!-- Stats charts rendered by JS -->
+                </div>
+                <div id="stats-empty-state" class="empty-state">
+                    <div class="empty-state__icon">📊</div>
+                    <h2>Ще немає статистики</h2>
+                    <p>Почни виконувати звички — і тут з'явиться аналітика</p>
+                </div>
             </div>
         </div>
 
