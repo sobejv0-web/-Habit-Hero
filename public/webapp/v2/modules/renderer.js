@@ -596,11 +596,16 @@ function patchTrialLine(state) {
  * Tries to patch existing DOM nodes; rebuilds only what changed.
  */
 function reconcileGrid(state) {
-  if (!$grid) return;
+  if (!$grid) {
+    console.warn('[reconcileGrid] $grid is null — skipping');
+    return;
+  }
 
   const habits   = Selectors.habits(state);
   const checkins = state.checkins;
   const progress = Selectors.todayProgress(state);
+
+  console.log(`[reconcileGrid] habits: ${habits.length}, routines: ${(state.routines||[]).length}, $grid: ${!!$grid}, $content: ${!!$content}`);
 
   // Nothing to show?
   if (habits.length === 0 && (state.routines || []).length === 0) {
@@ -698,7 +703,10 @@ function reconcileGrid(state) {
 const listMap = new Map();
 
 function reconcileHabitsList(state) {
-  if (!$habitsList) return;
+  if (!$habitsList) {
+    console.warn('[reconcileHabitsList] $habitsList is null — skipping');
+    return;
+  }
 
   // Always hide skeleton once we have data
   const skeletonEl = document.getElementById('habits-skeleton');
@@ -706,6 +714,7 @@ function reconcileHabitsList(state) {
 
   const habits   = Selectors.habits(state);
   const checkins = state.checkins;
+  console.log(`[reconcileHabitsList] habits: ${habits.length}, $habitsList: ${!!$habitsList}`);
 
   if (habits.length === 0) {
     $habitsList.innerHTML = '';
@@ -770,6 +779,9 @@ function reconcileHabitsList(state) {
  */
 export function render(state, prevState, actions) {
   if (!$grid) initRenderer();   // safety: auto-init if forgot to call init
+
+  const actionTypes = (actions || []).map(a => a.type).join(', ');
+  console.log(`[Render] actions: [${actionTypes}] | tab: ${state.ui.activeTab} | habits: ${state.habits?.length} | loading.me: ${state.loading.me}`);
 
   // ── Loading / Error states ──
   if (state.loading.me) {

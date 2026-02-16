@@ -358,14 +358,44 @@ async function handleAddHabit(data) {
 
   try {
     const result = await createHabit(data);
-    if (result?.habit) {
-      store.dispatch({ type: Actions.ADD_HABIT, payload: result.habit });
+    console.log('[AddHabit] API result:', result);
+
+    // Build a complete habit object by merging form data with API response.
+    // The backend does NOT return type/counterTarget/timerDuration —
+    // we must carry them from the original form data.
+    const raw = result?.habit || (result?.id ? result : null);
+    if (raw) {
+      const fullHabit = {
+        ...raw,
+        type:           data.type           || raw.type || 'boolean',
+        counterTarget:  data.counterTarget  ?? raw.counterTarget ?? null,
+        counterStep:    data.counterStep    ?? raw.counterStep   ?? 1,
+        timerDuration:  data.timerDuration  ?? raw.timerDuration ?? null,
+        streak:         raw.streak          ?? 0,
+      };
+      console.log('[AddHabit] Dispatching ADD_HABIT:', fullHabit);
+      store.dispatch({ type: Actions.ADD_HABIT, payload: fullHabit });
       showToast({ type: 'success', message: `«${data.title}» додано` });
-      track('habit_created', { type: data.type || 'boolean' });
-    } else if (result?.id) {
-      store.dispatch({ type: Actions.ADD_HABIT, payload: result });
-      showToast({ type: 'success', message: `«${data.title}» додано` });
-      track('habit_created', { type: data.type || 'boolean' });
+      track('habit_created', { type: fullHabit.type });
+
+      // Silent background resync — ensures store matches server 100%.
+      // Does NOT show loading skeleton; ADD_HABIT above is the instant update.
+      loadMe().then(meData => {
+        console.log('[AddHabit] Resync: habits from server:', meData?.habits?.length);
+        store.dispatch({ type: Actions.SET_ME, payload: meData });
+      }).catch(err => {
+        console.warn('[AddHabit] Resync failed (non-critical):', err);
+      });
+    } else {
+      console.error('[AddHabit] Unexpected API shape:', result);
+      showToast({ type: 'warning', message: 'Звичку створено, оновлюю…' });
+      // Fallback: full resync
+      try {
+        const meData = await loadMe();
+        store.dispatch({ type: Actions.SET_ME, payload: meData });
+      } catch (e) {
+        console.error('[AddHabit] Fallback resync failed:', e);
+      }
     }
   } catch (err) {
     logApiError(err, 'createHabit');
@@ -529,6 +559,7 @@ async function boot() {
   // ── Phase 2: Background Revalidation ──
   try {
     const data = await loadMe();
+    console.log('[Boot] loadMe OK — habits:', data?.habits?.length, '| todayCheckins:', Object.keys(data?.todayCheckins || {}).length);
 
     // API wins: update store with fresh data
     store.dispatch({ type: Actions.SET_ME, payload: data });
